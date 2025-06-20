@@ -22,6 +22,10 @@ public class ProductController {
     public List<Product> addProducts(@RequestBody List<Product> products) {
         return service.saveProducts(products);
     }
+    @GetMapping("/health")
+    public String healthCheck() {
+    return "App is running - v2.0.0";
+    }
 
     @GetMapping("/products")
     public List<Product> findAllProducts() {
