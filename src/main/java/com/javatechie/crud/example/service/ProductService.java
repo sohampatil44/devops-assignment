@@ -15,7 +15,9 @@ public class ProductService {
     public Product saveProduct(Product product) {
         return repository.save(product);
     }
-
+    public List<Product> searchProducts(String name) {
+    return repository.searchByName(name);
+    }
     public List<Product> saveProducts(List<Product> products) {
         return repository.saveAll(products);
     }

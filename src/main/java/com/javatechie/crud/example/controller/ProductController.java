@@ -3,6 +3,7 @@ package com.javatechie.crud.example.controller;
 import com.javatechie.crud.example.entity.Product;
 import com.javatechie.crud.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class ProductController {
         return service.saveProducts(products);
     }
 
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> search(@RequestParam String name) {
+        List<Product> products = service.searchProducts(name);
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/products")
     public List<Product> findAllProducts() {
         return service.getProducts();
@@ -33,7 +40,7 @@ public class ProductController {
         return service.getProductById(id);
     }
 
-    @GetMapping("/product/{name}")
+    @GetMapping("/productByName/{name}")
     public Product findProductByName(@PathVariable String name) {
         return service.getProductByName(name);
     }
