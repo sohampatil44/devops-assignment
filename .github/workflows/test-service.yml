@@ -1,0 +1,27 @@
+name: Run Integration Tests
+
+on:
+ push:
+   branches:
+     - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Start services
+        run: docker-compose up -d      
+
+
+      - name: Wait for Services
+        run: sleep 20
+
+      - name: Run Health Check
+        run: |
+          curl --fail http://localhost:8081/actuator/health
+          curl --fail http://localhost:8082/actuator/health
+          curl --fail http://localhost:8083/actuator/health 
