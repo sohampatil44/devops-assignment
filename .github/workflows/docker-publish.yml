@@ -1,0 +1,36 @@
+name: Build and Push Multi-Version Docker Images
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and Push v1.0.0
+        run: |
+          cp v1/target/*.jar target/spring-boot-crud-example-2-0.0.1-SNAPSHOT.jar
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/springboot-crud:v1.0.0 .
+          docker push ${{ secrets.DOCKER_USERNAME }}/springboot-crud:v1.0.0
+
+      - name: Build and Push v1.1.0
+        run: |
+          cp v1.1/target/*.jar target/spring-boot-crud-example-2-0.0.1-SNAPSHOT.jar
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/springboot-crud:v1.1.0 .
+          docker push ${{ secrets.DOCKER_USERNAME }}/springboot-crud:v1.1.0
+
+      - name: Build and Push v2.0.0
+        run: |
+          cp v2/target/*.jar target/spring-boot-crud-example-2-0.0.1-SNAPSHOT.jar
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/springboot-crud:v2.0.0 .
+          docker push ${{ secrets.DOCKER_USERNAME }}/springboot-crud:v2.0.0
